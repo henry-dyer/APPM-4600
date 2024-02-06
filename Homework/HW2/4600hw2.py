@@ -25,7 +25,7 @@ def question3B():
     return
 
 
-def question3C():
+def question3D():
     S = 0
     n = 1
     x = 9.999999995000000 ** -10
