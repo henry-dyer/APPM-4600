@@ -1,4 +1,3 @@
-
 """
     Inputs:
     f,a,b - function and endpoints of initial interval
@@ -12,6 +11,8 @@
     - ier = 2 => ran out of iterations
     - ier = 3 => other error ==== You can explain
     """
+import numpy as np
+
 
 # define routines
 def bisection(f, a, b, tol, Nmax):
@@ -53,6 +54,7 @@ def bisection(f, a, b, tol, Nmax):
             ier = 3
             return [astar, ier]
         if abs(b - a) < tol:
+            print('Number of iterations:', count)
             astar = a
             ier = 0
             return [astar, ier]
@@ -64,11 +66,11 @@ def bisection(f, a, b, tol, Nmax):
 
 
 # use routines
-f = lambda x: x ** 3 + x - 4
-a = 1
-b = 4
+f = lambda x: x**9 - 45*x**8 + 900*x**7 - 10500*x**6 + 78750*x**5 - 393750*x**4 + 1312500*x**3 - 2812500*x**2 + 3515625*x - 1953125
+a = 4.82
+b = 5.2
 Nmax = 100
-tol = 1e-3
+tol = 10 ** -4
 [astar, ier] = bisection(f, a, b, tol, Nmax)
 print('the approximate root is', astar)
 print('the error message reads:', ier)
