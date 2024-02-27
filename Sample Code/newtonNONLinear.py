@@ -25,6 +25,8 @@ def evalJ(x):
     return J
 
 
+
+
 def Newton(x0,tol,Nmax):
 
     ''' inputs: x0 = initial guess, tol = tolerance, Nmax = max its'''
