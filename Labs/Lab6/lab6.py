@@ -45,8 +45,8 @@ def evalJ_finite(x, h):
 
     J[0, 0] = evalF1([x[0] + h, x[1]])[0] - evalF1([x[0] - h, x[1]])[0] / (2 * h)
     J[0, 1] = evalF1([x[0], x[1] + h])[0] - evalF1([x[0], x[1] - h])[0] / (2 * h)
-    J[1, 0] = evalF1([x[0] + h, x[1]])[1] - evalF1([x[0] - h, x[1]])[0] / (2 * h)
-    J[1, 1] = evalF1([x[0], x[1] + h])[1] - evalF1([x[0], x[1] - h])[0] / (2 * h)
+    J[1, 0] = evalF1([x[0] + h, x[1]])[1] - evalF1([x[0] - h, x[1]])[1] / (2 * h)
+    J[1, 1] = evalF1([x[0], x[1] + h])[1] - evalF1([x[0], x[1] - h])[1] / (2 * h)
 
     return J
 
