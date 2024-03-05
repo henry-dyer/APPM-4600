@@ -7,128 +7,78 @@ import matplotlib.pyplot as plt
 
 
 def driver():
-    def F(x):
+    #a = 1
+    #b = 20
+
+    # objective function
+    def fun(x):
         f_x = np.zeros(3)
         f_x[0] = x[0] + np.cos(x[0] * x[1] * x[2]) - 1
         f_x[1] = (1 - x[0]) ** .25 + x[1] + 0.05 * x[2] ** 2 - 0.15 * x[2] - 1
         f_x[2] = -x[0] ** 2 - 0.1 * x[1] ** 2 + 0.01 * x[1] + x[2] - 1
-        return f_x
-
-    def JF(x):
-        J = np.zeros((3, 3))
-
-        J[0, 0] = 1 + x[1] * x[2] * np.cos(x[0] * x[1] * x[2])
-        J[0, 1] = x[0] * x[2] * np.cos(x[0] * x[1] * x[2])
-        J[0, 2] = x[0] * x[1] * np.cos(x[0] * x[1] * x[2])
-        J[1, 0] = -0.25 * (1 - x[0]) ** -0.75
-        J[1, 1] = 1
-        J[1, 2] = 0.1 * x[2] - 0.15
-        J[2, 0] = -2 * x[0]
-        J[2, 1] = -0.2 * x[1] + 0.01
-        J[2, 2] = 1
-
-        return J
-
-    # Define quadratic function and its gradient based on (F,JF)
-    def q(x):
-        Fun = F(x)
-        return 0.5 * (Fun[0] ** 2 + Fun[1] + Fun[2] ** 2)
-
-    def Gq(x):
-        Jfun = JF(x)
-        Ffun = F(x)
-        return np.transpose(Jfun) @ Ffun
-
-    # Apply steepest descent:
-    x0 = np.array([0, 0, 0])
-    tol = 1e-6
-    nmax = 1000
-    (r, rn, nf, ng) = steepest_descent(q, Gq, x0, tol, nmax)
-
-    ################################################################################
-    # plot of the trajectory of steepest descent against contour map
-    nX = 400
-    nY = 400
-    (X, Y) = np.meshgrid(np.linspace(-2, 10, nX), np.linspace(-2, 8, nY))
-    xx = X.flatten()
-    yy = Y.flatten()
-    N = nX * nY
-    V = np.zeros((nX, nY))
-    for i in np.arange(nX):
-        for j in np.arange(nY):
-            V[i, j] = q(np.array([X[i, j], Y[i, j]]))
-
-    # levels=np.arange(0,200,1)
-    fig = plt.contour(X, Y, V, levels=np.arange(0, 200, 1))
-
-    plt.plot(rn[:, 0], rn[:, 1], 'k-o')
-    plt.show()
-
-    ############################################################################
-    ################################################################################
-    # Plot of log||Fn|| and of log error
-    Error = np.linalg.norm(np.abs(rn - r), axis=1);
-    plt.plot(np.arange(rn.shape[0]), np.log10(Error), 'r-o')
-    plt.show();
-    # input();
-
-    Fn = np.zeros(len(rn))
-    for i in np.arange(len(rn)):
-        Fn[i] = q(rn[i])
-
-    plt.plot(np.arange(rn.shape[0]), np.log10(np.abs(Fn)), 'g-o')
-    plt.show()
-    ################################################################################
-    ################################################################################
-    # Minimization example start. This is where you implement f and its gradient, and
-    # use the steepest descent function above to find its minima given x0, tolerance
-    # and max number of iterations nmax.
-
-    # This example has a unique global minimizer at (1,1), with value equal to 0.
-    # (Rosenbrock banana function)
-    a = 1
-    b = 20
-
-    # objective function
-    def fun(x):
-        return (a - x[0]) ** 2 + b * (x[1] - x[0] ** 2) ** 2;
+        return f_x[0]**2 + f_x[1]**2 + f_x[2]**2
 
     # gradient vector
     def Gfun(x):
-        G = np.array([-2 * (a - x[0]) - 4 * x[0] * b * (x[1] - x[0] ** 2), 2 * b * (x[1] - x[0] ** 2)]);
-        return G
+        J = np.zeros((3, 3))
+
+        J[0, 0] = 2 * (x[0] + np.cos(x[0] * x[1] * x[2]) - 1) * (1 - x[1] * x[2] * np.sin(x[0] * x[1] * x[2]))
+        J[0, 1] = 2 * (x[0] + np.cos(x[0] * x[1] * x[2]) - 1) *(- x[0] * x[2] * np.sin(x[0] * x[1] * x[2]))
+        J[0, 2] = 2 * (x[0] + np.cos(x[0] * x[1] * x[2]) - 1) *(- x[0] * x[1] * np.sin(x[0] * x[1] * x[2]))
+        J[1, 0] = 2 * ((1 - x[0]) ** .25 + x[1] + 0.05 * x[2] ** 2 - 0.15 * x[2] - 1) * (-0.25 * (1 - x[0]) ** -0.75)
+        J[1, 1] = 2 * ((1 - x[0]) ** .25 + x[1] + 0.05 * x[2] ** 2 - 0.15 * x[2] - 1)
+        J[1, 2] = 2 * ((1 - x[0]) ** .25 + x[1] + 0.05 * x[2] ** 2 - 0.15 * x[2] - 1) * (0.1 * x[2] - 0.15)
+        J[2, 0] = 2 * (-x[0] ** 2 - 0.1 * x[1] ** 2 + 0.01 * x[1] + x[2] - 1) * (-2 * x[0])
+        J[2, 1] = 2 * (-x[0] ** 2 - 0.1 * x[1] ** 2 + 0.01 * x[1] + x[2] - 1) *(-0.2 * x[1] + 0.01)
+        J[2, 2] = 2 * (-x[0] ** 2 - 0.1 * x[1] ** 2 + 0.01 * x[1] + x[2] - 1)
+
+        return np.array([J[0, 0] + J[0, 1] + J[0, 2], J[1, 0] + J[1, 1] + J[1, 2], J[2, 0] + J[2, 1] + J[2, 2]])
 
     # hessian matrix (2nd derivatives)
-    def Hfun(x):
-        H = np.array([[2 - 4 * b * x[1] + 12 * b * x[0] ** 2, -4 * b * x[0]], [-4 * b * x[0], 2 * b]]);
-        return H
+    '''def Hfun(x):
+        H = np.zeros((3, 3))
 
-    ################################################################################
+        H[0, 0] = - x[1]**2 * x[2]**2 * np.cos(x[0] * x[1] * x[2])
+        H[0, 1] = - x[0]**2 * x[2]**2 * np.cos(x[0] * x[1] * x[2])
+        H[0, 2] = - x[0]**2 * x[1]**2 * np.cos(x[0] * x[1] * x[2])
+        H[1, 0] = -(3/16) * (1 - x[0]) ** -1.75
+        H[1, 1] = 0
+        H[1, 2] = 0.1
+        H[2, 0] = -2
+        H[2, 1] = -0.2
+        H[2, 2] = 0
+
+        return H'''
+
     # Apply steepest descent to finding the minima given initial conditions and tolerance
-    x0 = np.array([-1, -1])
+    x0 = np.array([0, 0, 0])
     tol = 1e-6
     nmax = 1000
     (r, rn, nf, ng) = steepest_descent(fun, Gfun, x0, tol, nmax)
 
-    ################################################################################
-    # plot of the trajectory of steepest descent against contour map
+    print(r)
+
+
+    '''# plot of the trajectory of steepest descent against contour map
     nX = 200
     nY = 200
-    (X, Y) = np.meshgrid(np.linspace(-1, 1.5, nX), np.linspace(-1, 1.5, nY))
+    nZ = 200
+    (X, Y, Z) = np.meshgrid(np.linspace(-1, 1.5, nX), np.linspace(-1, 1.5, nY), np.linspace(-1, 1.5, nZ))
     xx = X.flatten()
     yy = Y.flatten()
-    N = nX * nY
-    F = np.zeros((nX, nY))
+    zz = Z.flatten()
+    N = nX * nY * nZ
+    F = np.zeros((nX, nY, nZ))
     for i in np.arange(nX):
         for j in np.arange(nY):
-            F[i, j] = fun(np.array([X[i, j], Y[i, j]]))
+            for k in np.arange(nZ):
+                F[i, j, k] = fun(np.array([X[i, j, k], Y[i, j, k], Z[i, j, k]]))
 
     fig = plt.contour(X, Y, F, levels=np.arange(0, 20, 0.25))
 
     plt.plot(rn[:, 0], rn[:, 1], 'k-o')
     plt.show()
 
-    ################################################################################
     # Plot of log||Fn|| and of log error
     Error = np.linalg.norm(np.abs(rn - np.array([1, 1])), axis=1)
     plt.plot(np.arange(rn.shape[0]), np.log10(Error), 'r-o')
@@ -140,10 +90,9 @@ def driver():
         Fn[i] = fun(rn[i])
 
     plt.plot(np.arange(rn.shape[0]), np.log10(np.abs(Fn)), 'g-o')
-    plt.show()
+    plt.show()'''
 
 
-################################################################################
 # Backtracking line-search algorithm (to find an for the step xn + an*pn)
 def line_search(f, Gf, x0, p, type, mxbck, c1, c2):
     alpha = 2
@@ -203,14 +152,10 @@ def steepest_descent(f, Gf, x0, tol, nmax, type='swolfe', verb=True):
     ng = 1  # gradient eval
 
     # if verb is true, prints table of results
-    if verb:
-        print("|--n--|-alpha-|----|xn|----|---|f(xn)|---|---|Gf(xn)|---|")
 
     # while the size of the step is > tol and n less than nmax
     n = 0
     while n <= nmax and np.linalg.norm(pn) > tol:
-        if verb:
-            print("|--%d--|%1.5f|%1.7f|%1.7f|%1.7f|" % (n, alpha, np.linalg.norm(xn), np.abs(fn), np.linalg.norm(pn)))
 
         # Use line_search to determine a good alpha, and new step xn = xn + alpha*pn
         (xn, alpha, nfl, ngl) = line_search(f, Gf, xn, pn, type, mxbck, c1, c2)
