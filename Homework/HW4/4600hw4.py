@@ -243,7 +243,7 @@ if __name__ == '__main__':
     print('\n------------------------------------------\n')
     print('Question 2i Results \n')
 
-    x0 = np.array([1, -1])
+    x0 = np.array([1, 1])
 
     t = time.time()
     for j in range(20):
@@ -280,6 +280,7 @@ if __name__ == '__main__':
     print('Question 3 Answers')
 
     x0 = np.array([0, 0, 0])
+    tol = 1e-6
 
     t = time.time()
     for j in range(20):
