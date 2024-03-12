@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 
 
 def driver():
-    f = lambda x: np.exp(x)
+    #f = lambda x: np.exp(x)
+    f = lambda x: (1 + (10 * x) ** 2) ** -1
 
-    N = 10
+    N = 20
     ''' interval'''
-    a = 0
+    a = -1
     b = 1
 
     ''' create equispaced interpolation nodes'''
