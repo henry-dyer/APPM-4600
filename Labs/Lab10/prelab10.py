@@ -18,9 +18,5 @@ def eval_legendre(n, x):
     return p
 
 
-
 if __name__ == '__main__':
-    n = 4
-    x = 0.5
-
-    print(eval_legendre(n , x))
+    print(eval_legendre(5 , 5))
