@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.linalg import inv
+from numpy.linalg import inv, solve
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 
@@ -28,7 +28,7 @@ def question1(x_values, y_values, z):
 def q1b_driver():
     f = lambda x: 1 / (1 + (16 * x) ** 2)
 
-    n = 3
+    n = 17
 
     x_vals = np.zeros(n + 1)
 
@@ -44,8 +44,8 @@ def q1b_driver():
     for i in range(1001):
         y_interp[i] = question1(x_vals, y_vals, z_vals[i])
 
-    plt.plot(x_vals, y_vals, 'o',label='Actual', color='red')
-    plt.plot(z_vals, y_interp, label='Barycentric Lagrange', color='blue')
+    plt.plot(x_vals, y_vals, 'o',label='Interpolation Points', color='red')
+    plt.plot(z_vals, y_interp, label=f'Barycentric Lagrange with n = {n}', color='blue')
 
     plt.xlabel('x')
     plt.ylabel('y')
@@ -59,7 +59,7 @@ def q1b_driver():
 def q1c_driver():
     f = lambda x: 1 / (1 + (16 * x) ** 2)
 
-    n = 25
+    n = 17
 
     x_vals = np.zeros(n)
 
@@ -75,14 +75,32 @@ def q1c_driver():
     for i in range(1001):
         y_interp[i] = question1(x_vals, y_vals, z_vals[i])
 
-    plt.plot(x_vals, y_vals, 'o', label='Actual', color='red')
-    plt.plot(z_vals, y_interp, label='Barycentric Lagrange', color='blue')
+    plt.plot(x_vals, y_vals, 'o', label='Interpolation Points', color='red')
+    plt.plot(z_vals, y_interp, label=f'Barycentric Lagrange for n = {n}', color='blue')
 
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.title('Actual vs Barycentric')
+    plt.title('Barycentric Interpolation with Chebyshev Points')
     plt.legend()
     plt.show()
+
+    return
+
+def question2A():
+
+    A = np.array([[1, -1, 1], [1, 1, 1], [2, 1, 0]])
+
+    b_0 = np.array([1, 0, 0])
+    b_1 = np.array([0, 1, 0])
+    b_2 = np.array([0, 0, 1])
+
+    x_0 = solve(A, b_0)
+    x_1 = solve(A, b_1)
+    x_2 = solve(A, b_2)
+
+    print('x_0:', x_0)
+    print('x_1:', x_1)
+    print('x_2:', x_2)
 
     return
 
@@ -202,7 +220,11 @@ def Q4_driver():
 
 if __name__ == '__main__':
 
+    #q1b_driver()
+
     q1c_driver()
+
+    #question2A()
 
     #question3C()
 
