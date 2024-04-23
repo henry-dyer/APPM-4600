@@ -127,22 +127,6 @@ def question3C():
 
     # Plot the original function
     x_values = np.linspace(0, 1, 100)
-    '''plt.plot(x_values, np.sin(9 * x_values), label='sin(9x)', color='blue')
-
-    # Plot the periodic cubic spline interpolation
-    plt.plot(x_values, spline(x_values), label='Periodic Cubic Spline', color='red')
-
-    
-
-    # Add labels and legend
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title('Periodic Cubic Spline Interpolation of sin(9x)')
-    plt.legend()
-
-    # Show plot
-    plt.grid(True)
-    plt.show()'''
 
     original_values = np.sin(9 * x_values)
     interp_values_05 = spline_05(x_values)
